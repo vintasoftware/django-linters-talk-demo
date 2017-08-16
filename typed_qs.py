@@ -1,7 +1,7 @@
-from django.db.models.query import QuerySet
+from django.db import models
 
 
-class PersonQuerySet(QuerySet):
+class PersonQuerySet(models.QuerySet):
     def authors(self) -> 'PersonQuerySet':
         return self.filter(role='A')
 
