@@ -1,11 +1,13 @@
 '''
-mypy doesn't have an official API for type inference [1] and it doesn't
-do inference inside functions that don't have type annotations [2],
-so what we're doing here doesn't make much sense. It just explores what
-mypy can do in the future.
+mypy doesn't have an official API for type inference [1], it doesn't
+do inference inside functions that don't have type annotations [2], and
+it doesn't try to infer types of modules that don't have a stub or
+typing info [3]. Therefore, what we're doing here doesn't make much sense.
+It just explores what mypy can do in the future.
 
 [1] https://github.com/python/mypy/issues/2097#issuecomment-319224603
 [2] http://mypy.readthedocs.io/en/latest/dynamic_typing.html#dynamically-typed-code
+[3] https://github.com/python/mypy/issues/638
 '''
 
 from mypy import build, types
