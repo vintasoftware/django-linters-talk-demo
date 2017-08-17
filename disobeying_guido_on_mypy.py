@@ -19,7 +19,7 @@ options = Options()
 options.use_builtins_fixtures = True
 options.show_traceback = True
 options.strict_optional = True
-options.check_untyped_defs = True  # this doesn't seem to activate inference inside unannotated defs
+options.check_untyped_defs = True
 options.warn_return_any = True
 options.warn_no_return = True
 
@@ -38,7 +38,8 @@ result = build.build(sources=[source],
                      alt_lib_path='stubs')
 # mypy already detects admin_authors is missing return...
 # however, if `-> 'PersonQuerySet'` is removed,
-# it infers the admin_authors expression_stmt body as Any
+# it infers the admin_authors expression_stmt body as Any.
+# mypy does not infer the type of self when the function is untyped.
 print('result.errors', result.errors)
 
 
