@@ -9,6 +9,8 @@ It just explores what mypy can do in the future.
 [2] http://mypy.readthedocs.io/en/latest/dynamic_typing.html#dynamically-typed-code
 [3] https://github.com/python/mypy/issues/638
 '''
+import typed_ast.ast3
+import typed_astunparse
 
 from mypy import build, types
 from mypy.options import Options
@@ -26,12 +28,29 @@ options.warn_no_return = True
 program_text = '''from django.db import models
 
 class PersonQuerySet(models.QuerySet):
-    def authors(self) -> 'PersonQuerySet':
+    def authors(self):
         return self.filter(role='A')
 
-    def admin_authors(self) -> 'PersonQuerySet':
+    def admin_authors(self):
         self.authors().filter(is_admin=True)
 '''
+
+
+class AddClassTypeToSelf(typed_ast.ast3.NodeTransformer):
+    # TODO: need to also add return to work...
+    def visit_ClassDef(self, class_node):
+        for method in class_node.body:
+            if isinstance(method, typed_ast.ast3.FunctionDef):
+                if len(method.args.args) and method.args.args[0].arg == 'self':
+                    if method.args.args[0].annotation is None:
+                        method.args.args[0].annotation = typed_ast.ast3.Str(class_node.name)
+        return class_node
+
+
+program_text = typed_astunparse.unparse(
+    AddClassTypeToSelf().visit(
+        typed_ast.ast3.parse(program_text)))
+
 source = build.BuildSource('main', '__main__', program_text)
 result = build.build(sources=[source],
                      options=options,

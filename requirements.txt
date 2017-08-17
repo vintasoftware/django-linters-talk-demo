@@ -1,6 +1,8 @@
+appdirs==1.4.3
 appnope==0.1.0
 astor==0.5
 astroid==1.5.3
+astunparse==1.5.0
 decorator==4.1.2
 Django==1.11.4
 flake8==3.4.1
@@ -22,9 +24,12 @@ pyflakes==1.5.0
 Pygments==2.2.0
 pylint==1.7.2
 pytz==2017.2
+rply==0.7.5
 simplegeneric==0.8.1
 six==1.10.0
 traitlets==4.3.2
 typed-ast==1.0.4
+typed-astunparse==2.0.0
+typing==3.6.2
 wcwidth==0.1.7
 wrapt==1.10.10
